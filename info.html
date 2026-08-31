@@ -5,37 +5,55 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>¿Qué es la residencia fiscal? — Regla 183</title>
 <meta name="description" content="Qué es la residencia fiscal en España según el artículo 9 de la Ley 35/2006 del IRPF: los 183 días, el núcleo de intereses económicos y la presunción por cónyuge e hijos." />
+<link rel="canonical" href="https://183rule.netlify.app/info.html" />
+<meta name="theme-color" content="#e8eae2" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#14181d" media="(prefers-color-scheme: dark)" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Regla 183" />
+<meta property="og:title" content="¿Qué es la residencia fiscal en España?" />
+<meta property="og:description" content="Los tres criterios del artículo 9 LIRPF, la diferencia entre domicilio y residencia fiscal, y los convenios de doble imposición." />
+<meta property="og:url" content="https://183rule.netlify.app/info.html" />
+<meta property="og:locale" content="es_ES" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="¿Qué es la residencia fiscal en España?" />
+<meta name="twitter:description" content="Los tres criterios del artículo 9 LIRPF y cómo se determina la residencia fiscal." />
+
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
 <script src="assets/theme-init.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@600&family=Public+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/styles.css" />
 </head>
-<body class="min-h-screen flex flex-col">
+<body>
+<a href="#main-content" class="skip-link">Saltar al contenido</a>
 
 <header class="masthead">
-  <div class="max-w-3xl mx-auto px-5 py-4 flex items-center justify-between gap-4">
-    <a href="index.html" class="flex items-center gap-3 shrink-0">
+  <div class="header-bar">
+    <a href="index.html" class="brand">
       <span class="seal">183</span>
       <span class="wordmark">Regla 183</span>
     </a>
-    <nav class="flex items-center gap-5">
-      <a href="index.html" class="nav-link">Calculadora</a>
-      <a href="info.html" class="nav-link" aria-current="page">Qué es</a>
-      <a href="faq.html" class="nav-link">FAQ</a>
+    <nav class="main-nav" aria-label="Principal">
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Inicio</a>
+        <a href="info.html" class="nav-link" aria-current="page">Qué es</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+      </div>
       <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Cambiar tema claro/oscuro">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
       </button>
     </nav>
   </div>
 </header>
 
-<main class="flex-1 w-full max-w-3xl mx-auto px-5 py-10 sm:py-14">
+<main class="page-main" id="main-content">
 
-  <p class="eyebrow mb-2">Marco normativo</p>
-  <h1 class="text-3xl sm:text-4xl mb-6">Qué es la residencia fiscal y por qué importa</h1>
+  <div class="hero">
+    <p class="eyebrow">Marco normativo</p>
+    <h1>Qué es la residencia fiscal y por qué importa</h1>
+  </div>
 
   <div class="prose-doc">
     <p>
@@ -51,32 +69,36 @@
     </p>
   </div>
 
-  <div class="doc-panel p-5 my-8">
-    <p class="mb-4"><span class="clause-number">Art. 9.1.a</span> — <strong>Permanencia más de 183 días</strong></p>
-    <p class="text-sm leading-relaxed mb-4" style="color: var(--ink-soft);">
-      Que permanezcas más de 183 días, durante el año natural, en territorio español. Para este cómputo se
-      suman también las <strong style="color: var(--ink);">ausencias esporádicas</strong>, salvo que acredites
-      tu residencia fiscal en otro país. Si ese otro país o territorio es calificado como de nula tributación,
-      Hacienda puede exigir además la prueba de tu permanencia allí durante más de 183 días en el año natural.
-      Es el criterio que calcula esta herramienta.
-    </p>
-    <div class="hairline" style="border-top-width: 1px;"></div>
-    <p class="mt-4 mb-4"><span class="clause-number">Art. 9.1.b</span> — <strong>Núcleo de intereses económicos</strong></p>
-    <p class="text-sm leading-relaxed mb-4" style="color: var(--ink-soft);">
-      Que radique en España el núcleo principal o la base de tus actividades o intereses económicos, de forma
-      directa o indirecta. Es un criterio independiente del anterior: puedes estar por debajo de 183 días y aun
-      así ser residente fiscal si tu actividad económica principal se desarrolla en España.
-    </p>
-    <div class="hairline" style="border-top-width: 1px;"></div>
-    <p class="mt-4 mb-2"><span class="clause-number">Art. 9.1.b, párr. 2</span> — <strong>Presunción por cónyuge e hijos</strong></p>
-    <p class="text-sm leading-relaxed" style="color: var(--ink-soft);">
-      Se presume, salvo prueba en contrario, que resides fiscalmente en España si residen habitualmente aquí
-      tu cónyuge no separado legalmente y los hijos menores de edad que dependan de ti. Es una presunción: puede
-      destruirse aportando prueba de tu residencia fiscal efectiva en otro país.
-    </p>
+  <div class="doc-panel">
+    <div class="clause">
+      <p class="clause-title"><span class="clause-number">Art. 9.1.a</span> — <strong>Permanencia más de 183 días</strong></p>
+      <p class="clause-body">
+        Que permanezcas más de 183 días, durante el año natural, en territorio español. Para este cómputo se
+        suman también las <strong>ausencias esporádicas</strong>, salvo que acredites tu residencia fiscal en
+        otro país. Si ese otro país o territorio es calificado como de nula tributación, Hacienda puede exigir
+        además la prueba de tu permanencia allí durante más de 183 días en el año natural. Es el criterio que
+        calcula esta herramienta.
+      </p>
+    </div>
+    <div class="clause">
+      <p class="clause-title"><span class="clause-number">Art. 9.1.b</span> — <strong>Núcleo de intereses económicos</strong></p>
+      <p class="clause-body">
+        Que radique en España el núcleo principal o la base de tus actividades o intereses económicos, de forma
+        directa o indirecta. Es un criterio independiente del anterior: puedes estar por debajo de 183 días y aun
+        así ser residente fiscal si tu actividad económica principal se desarrolla en España.
+      </p>
+    </div>
+    <div class="clause">
+      <p class="clause-title"><span class="clause-number">Art. 9.1.b, párr. 2</span> — <strong>Presunción por cónyuge e hijos</strong></p>
+      <p class="clause-body">
+        Se presume, salvo prueba en contrario, que resides fiscalmente en España si residen habitualmente aquí
+        tu cónyuge no separado legalmente y los hijos menores de edad que dependan de ti. Es una presunción:
+        puede destruirse aportando prueba de tu residencia fiscal efectiva en otro país.
+      </p>
+    </div>
   </div>
 
-  <h2 class="text-2xl mb-3 mt-12">Domicilio fiscal ≠ residencia fiscal</h2>
+  <h2>Domicilio fiscal ≠ residencia fiscal</h2>
   <div class="prose-doc">
     <p>
       Son dos conceptos distintos que suelen confundirse. La <strong>residencia fiscal</strong> (art. 9 LIRPF)
@@ -92,8 +114,8 @@
     </p>
   </div>
 
-  <h2 class="text-2xl mb-3 mt-12">Cuando dos países te reclaman como residente</h2>
-  <div class="prose-doc mb-10">
+  <h2>Cuando dos países te reclaman como residente</h2>
+  <div class="prose-doc">
     <p>
       Cada país aplica sus propias reglas de residencia fiscal. Es posible que, por aplicar los criterios
       internos de dos países a la vez, una persona resulte residente fiscal en ambos simultáneamente. Para
@@ -109,14 +131,14 @@
     </p>
   </div>
 
-  <a href="index.html" class="add-row-btn inline-flex items-center gap-2 px-4 py-2">← Volver a la calculadora</a>
+  <a href="index.html" class="back-link">← Volver a la calculadora</a>
 
 </main>
 
 <footer class="site-footer">
-  <div class="max-w-3xl mx-auto px-5 py-6 flex flex-wrap items-center justify-between gap-3 text-xs" style="color: var(--ink-soft);">
+  <div class="footer-bar">
     <p>Regla 183 — herramienta orientativa, sin valor de asesoramiento fiscal.</p>
-    <nav class="flex gap-4">
+    <nav class="footer-nav" aria-label="Pie de página">
       <a href="index.html" class="nav-link">Calculadora</a>
       <a href="faq.html" class="nav-link">FAQ</a>
     </nav>
