@@ -1,0 +1,345 @@
+/* ==========================================================================
+   Regla 183 — sistema de diseño
+   Identidad: expediente / documento oficial. Sin tarjetas flotantes,
+   sin sombras genéricas: reglas finas, numeración de ledger, sellos.
+   ========================================================================== */
+
+:root {
+  --ink: #1b2430;
+  --ink-soft: #5b6472;
+  --paper: #e8eae2;
+  --paper-raised: #f5f6f1;
+  --paper-sunken: #dde0d5;
+  --line: #c6c8bc;
+  --accent: #9c2b3a;
+  --accent-soft: #f1dfdf;
+  --verified: #2f6b57;
+  --verified-soft: #dce8e1;
+  --focus-ring: #2f5f6b;
+
+  --font-display: "Spectral", Georgia, "Times New Roman", serif;
+  --font-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #e7e4da;
+    --ink-soft: #9aa0a6;
+    --paper: #14181d;
+    --paper-raised: #1d2229;
+    --paper-sunken: #10131a;
+    --line: #333a42;
+    --accent: #de8188;
+    --accent-soft: #3a2024;
+    --verified: #6cba9c;
+    --verified-soft: #1b2e28;
+    --focus-ring: #7fb8c7;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ink: #e7e4da;
+  --ink-soft: #9aa0a6;
+  --paper: #14181d;
+  --paper-raised: #1d2229;
+  --paper-sunken: #10131a;
+  --line: #333a42;
+  --accent: #de8188;
+  --accent-soft: #3a2024;
+  --verified: #6cba9c;
+  --verified-soft: #1b2e28;
+  --focus-ring: #7fb8c7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-feature-settings: "tnum" 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  text-wrap: balance;
+  font-weight: 600;
+}
+
+.font-display { font-family: var(--font-display); }
+.font-mono { font-family: var(--font-mono); font-feature-settings: "tnum" 1; }
+
+::selection {
+  background: var(--accent);
+  color: var(--paper-raised);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---- letterhead / masthead ---- */
+
+.masthead {
+  border-bottom: 1px solid var(--line);
+}
+
+.seal {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
+.nav-link {
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.nav-link:hover,
+.nav-link[aria-current="page"] {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+/* ---- theme toggle ---- */
+
+.theme-toggle {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--ink-soft);
+  background: transparent;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.theme-toggle:hover { border-color: var(--ink-soft); color: var(--ink); }
+
+/* ---- expediente / document surfaces ---- */
+
+.hairline { border-color: var(--line); }
+
+.doc-panel {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ---- ledger rows (period inputs) ---- */
+
+.ledger {
+  border-top: 1px solid var(--line);
+}
+
+.ledger-row {
+  border-bottom: 1px solid var(--line);
+  transition: background-color 0.15s ease;
+}
+
+.ledger-index {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.date-input {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  padding: 0.35rem 0.1rem;
+  width: 100%;
+  font-size: 0.95rem;
+  transition: border-color 0.15s ease;
+}
+.date-input:focus {
+  border-bottom-color: var(--accent);
+  outline: none;
+}
+.date-input.invalid { border-bottom-color: var(--accent); color: var(--accent); }
+
+.row-days {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.remove-row {
+  color: var(--ink-soft);
+  width: 1.75rem;
+  height: 1.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+.remove-row:hover { color: var(--accent); background: var(--accent-soft); }
+
+.add-row-btn {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  border: 1px dashed var(--line);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.add-row-btn:hover { border-color: var(--ink-soft); background: var(--paper-sunken); }
+
+/* ---- verdict / stamp ---- */
+
+.verdict-panel {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+}
+
+.day-count {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.progress-track {
+  height: 0.5rem;
+  background: var(--paper-sunken);
+  border: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--ink-soft);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+}
+.progress-fill.is-resident { background: var(--accent); }
+
+.threshold-mark {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 1px;
+  background: var(--ink);
+  opacity: 0.55;
+}
+
+.stamp {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 2px solid currentColor;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+  transform: rotate(-1.5deg);
+  border-radius: 2px;
+}
+.stamp.is-resident { color: var(--accent); }
+.stamp.is-not-resident { color: var(--verified); }
+
+/* ---- notice / aviso legal ---- */
+
+.notice {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+}
+
+.notice-muted {
+  border-left: 3px solid var(--line);
+  background: var(--paper-raised);
+}
+
+/* ---- document content pages (info / faq) ---- */
+
+.prose-doc {
+  max-width: 42rem;
+}
+.prose-doc p { color: var(--ink); line-height: 1.7; }
+.prose-doc p + p { margin-top: 1rem; }
+.prose-doc strong { font-weight: 600; }
+
+.clause-number {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 0.85em;
+}
+
+details.faq-item {
+  border-bottom: 1px solid var(--line);
+}
+details.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display);
+}
+details.faq-item summary::-webkit-details-marker { display: none; }
+.faq-marker {
+  font-family: var(--font-mono);
+  color: var(--ink-soft);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+details.faq-item[open] .faq-marker { transform: rotate(45deg); }
+
+footer.site-footer {
+  border-top: 1px solid var(--line);
+}
