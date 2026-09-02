@@ -6,8 +6,8 @@
 <title>Regla 183 — Calculadora de residencia fiscal en España</title>
 <meta name="description" content="Calcula cuántos días has estado en España durante el año natural y comprueba si superas el umbral de los 183 días que marca la residencia fiscal, según la Ley del IRPF." />
 <link rel="canonical" href="https://183rule.netlify.app/" />
-<meta name="theme-color" content="#e8eae2" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#14181d" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#fbf8f3" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#191713" media="(prefers-color-scheme: dark)" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Regla 183" />
@@ -79,72 +79,95 @@
 <main class="page-main" id="main-content">
 
   <div class="hero">
-    <p class="eyebrow">Art. 9 · Ley 35/2006 del IRPF</p>
+    <p class="eyebrow">Gratis, sin registro y en tres pasos</p>
     <h1>¿Eres residente fiscal en España?</h1>
     <p class="lede">
-      Introduce tus periodos de estancia en España a lo largo de un año natural. Sumamos los días de presencia
-      y te decimos si superas el umbral de los <strong>183 días</strong> que utiliza la Agencia Tributaria para
-      determinar la residencia fiscal.
+      Apunta las temporadas que has pasado en España durante un año y te sumamos los días. Si pasan de
+      <strong>183</strong>, Hacienda te considera residente fiscal. Tú pones las fechas, nosotros hacemos la cuenta.
     </p>
   </div>
 
-  <div class="field-row">
-    <div>
-      <label for="year-select" class="field-label">Año natural</label>
-      <select id="year-select" class="select-field font-mono"></select>
-    </div>
-  </div>
+  <div class="sheet">
 
-  <div class="section">
-    <div class="section-head">
-      <h2 class="section-label">Periodos de estancia</h2>
-      <button type="button" id="reset-periods" class="btn-text">Reiniciar</button>
-    </div>
-
-    <div id="periods" class="ledger"></div>
-
-    <template id="row-template">
-      <div class="ledger-row" role="group">
-        <span class="ledger-index" aria-hidden="true">01</span>
-        <div class="ledger-field">
-          <label class="field-label" data-role="start-label">Entrada</label>
-          <input type="date" data-field="start" class="date-input" autocomplete="off" />
-        </div>
-        <div class="ledger-field">
-          <label class="field-label" data-role="end-label">Salida</label>
-          <input type="date" data-field="end" class="date-input" autocomplete="off" />
-        </div>
-        <div class="row-days">—</div>
-        <button type="button" class="remove-row" aria-label="Eliminar periodo">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
+    <section class="step" aria-labelledby="step-year">
+      <div class="step-head">
+        <h2 class="step-title" id="step-year"><span class="step-num" aria-hidden="true">1</span> ¿Qué año quieres calcular?</h2>
       </div>
-    </template>
-
-    <button id="add-period" type="button" class="btn-add" aria-label="Añadir periodo">
-      <span aria-hidden="true">+</span><span aria-hidden="true">Añadir periodo</span>
-    </button>
-  </div>
-
-  <div class="verdict-panel">
-    <div class="verdict-top">
-      <p class="verdict-count">
-        <span class="field-label">Días de presencia acumulados</span>
-        <span><span id="total-days" class="day-count">0</span><span class="day-unit"> / 183</span></span>
+      <div id="year-picker" class="year-picker" role="group" aria-label="Elige el año natural del cálculo"></div>
+      <p class="year-note">
+        Contamos solo el año <strong id="year-note-value">—</strong>, del 1 de enero al 31 de diciembre. Si una
+        estancia empieza o acaba en otro año, no te preocupes: recortamos por ti la parte que no toca.
       </p>
-      <span id="verdict-stamp" class="stamp">No cumple el criterio de 183 días</span>
-    </div>
+    </section>
 
-    <div class="progress-track">
-      <div id="progress-fill" class="progress-fill" style="width: 0%;"></div>
-      <div id="threshold-mark" class="threshold-mark"></div>
-    </div>
+    <section class="step" aria-labelledby="step-periods">
+      <div class="step-head">
+        <h2 class="step-title" id="step-periods"><span class="step-num" aria-hidden="true">2</span> ¿Cuándo estuviste aquí?</h2>
+        <button type="button" id="reset-periods" class="btn-text">Empezar de nuevo</button>
+      </div>
 
-    <p id="verdict-detail" class="verdict-detail" aria-live="polite">Añade tus periodos para calcular el total.</p>
-    <p id="verdict-overlap-note" class="verdict-overlap-note" hidden></p>
+      <div id="periods" class="ledger"></div>
+
+      <template id="row-template">
+        <div class="ledger-row" role="group">
+          <span class="ledger-index" aria-hidden="true">01</span>
+          <div class="ledger-field is-start">
+            <label class="field-label" data-role="start-label">Llegada a España</label>
+            <input type="date" data-field="start" class="date-input" autocomplete="off" />
+          </div>
+          <div class="ledger-field is-end">
+            <label class="field-label" data-role="end-label">Salida de España</label>
+            <input type="date" data-field="end" class="date-input" autocomplete="off" />
+          </div>
+          <div class="row-days is-empty">—</div>
+          <button type="button" class="remove-row" aria-label="Eliminar periodo">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </template>
+
+      <button id="add-period" type="button" class="btn-add">
+        <span aria-hidden="true">+</span><span>Añadir otra estancia</span>
+      </button>
+    </section>
+
+    <section class="step verdict-panel" aria-labelledby="step-result">
+      <div class="step-head">
+        <h2 class="step-title" id="step-result">
+          <span class="step-num" aria-hidden="true">3</span> Tus días en España en <span id="result-year" class="font-mono">—</span>
+        </h2>
+      </div>
+
+      <div class="verdict-grid">
+        <div class="gauge">
+          <svg class="gauge-svg" viewBox="0 0 140 140" aria-hidden="true">
+            <circle class="gauge-track" cx="70" cy="70" r="58"></circle>
+            <circle id="gauge-arc" class="gauge-arc" cx="70" cy="70" r="58"></circle>
+            <line class="gauge-threshold" x1="70" y1="120" x2="70" y2="137"></line>
+          </svg>
+          <div class="gauge-center">
+            <span id="total-days" class="day-count">0</span>
+            <span class="day-unit">de 183 días</span>
+          </div>
+          <span class="gauge-threshold-label" aria-hidden="true">aquí están los 183</span>
+        </div>
+
+        <div class="verdict-body">
+          <span id="verdict-stamp" class="stamp is-not-resident">
+            <span class="stamp-glyph" aria-hidden="true">—</span>
+            <span id="verdict-stamp-text">Todavía no llegas a los 183 días</span>
+          </span>
+          <p id="verdict-detail" class="verdict-detail" aria-live="polite">Pon tus fechas arriba y verás el total al instante.</p>
+          <p id="verdict-overlap-note" class="verdict-overlap-note" hidden></p>
+          <p class="gauge-caption">El círculo es el año completo. La marca de abajo señala los 183 días.</p>
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <div class="notice">
+    <span class="notice-icon" aria-hidden="true">i</span>
     <p>
       <strong>Las ausencias esporádicas también cuentan.</strong> Si sales de España de forma puntual (vacaciones,
       viajes de trabajo…), esos días siguen sumando a tu cómputo salvo que acredites tu residencia fiscal en otro

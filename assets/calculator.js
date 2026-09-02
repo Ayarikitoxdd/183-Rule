@@ -2,7 +2,8 @@
   "use strict";
 
   const THRESHOLD = 183;
-  const SCALE_DAYS = 366; // eje del track: año completo, sea o no bisiesto
+  const SCALE_DAYS = 366; // eje del indicador: año completo, sea o no bisiesto
+  const GAUGE_CIRCUMFERENCE = 2 * Math.PI * 58; // r=58 en el SVG del contador
   const DAY_MS = 86400000;
   const MIN_YEAR = 1900;
   const MAX_YEAR = new Date().getFullYear() + 5;
@@ -10,21 +11,27 @@
   const MAX_DATE = `${MAX_YEAR}-12-31`;
   const STORAGE_KEY = "regla183-state-v1";
   const MAX_RESTORED_PERIODS = 50;
+  const ROW_EXIT_MS = 180;
 
   const periodsEl = document.getElementById("periods");
-  const yearSelect = document.getElementById("year-select");
+  const yearPicker = document.getElementById("year-picker");
+  const yearNoteEl = document.getElementById("year-note-value");
+  const resultYearEl = document.getElementById("result-year");
   const addBtn = document.getElementById("add-period");
   const resetBtn = document.getElementById("reset-periods");
   const totalDaysEl = document.getElementById("total-days");
-  const progressFill = document.getElementById("progress-fill");
-  const thresholdMark = document.getElementById("threshold-mark");
+  const gaugeArc = document.getElementById("gauge-arc");
   const stampEl = document.getElementById("verdict-stamp");
+  const stampTextEl = document.getElementById("verdict-stamp-text");
+  const stampGlyphEl = stampEl ? stampEl.querySelector(".stamp-glyph") : null;
   const detailEl = document.getElementById("verdict-detail");
   const overlapNoteEl = document.getElementById("verdict-overlap-note");
   const rowTemplate = document.getElementById("row-template");
 
   let periods = [];
   let nextId = 1;
+  let selectedYear = new Date().getFullYear();
+  let animateRowId = null;
 
   function isValidDateString(value) {
     if (typeof value !== "string") return false;
@@ -49,7 +56,7 @@
   function saveState() {
     try {
       const state = {
-        year: yearSelect.value,
+        year: String(selectedYear),
         periods: periods.map((p) => ({ start: p.start, end: p.end })),
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -81,21 +88,52 @@
     }
   }
 
+  /* ---- año natural: mismo rango que el <select> anterior (actual+1 … actual-4) ---- */
+
   function populateYears(selectedValue) {
     const current = new Date().getFullYear();
     const target = selectedValue && Number.isFinite(Number(selectedValue)) ? Number(selectedValue) : current;
-    yearSelect.innerHTML = "";
-    for (let y = current + 1; y >= current - 4; y--) {
-      const opt = document.createElement("option");
-      opt.value = String(y);
-      opt.textContent = String(y);
-      if (y === target) opt.selected = true;
-      yearSelect.appendChild(opt);
-    }
+    const years = [];
+    for (let y = current + 1; y >= current - 4; y--) years.push(y);
+
+    selectedYear = years.indexOf(target) !== -1 ? target : current;
+
+    yearPicker.innerHTML = "";
+    years.forEach((y) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "year-btn font-mono";
+      btn.textContent = String(y);
+      btn.dataset.year = String(y);
+      btn.setAttribute("aria-pressed", y === selectedYear ? "true" : "false");
+      yearPicker.appendChild(btn);
+    });
+
+    syncYearLabels();
   }
 
-  function addPeriod(start = "", end = "") {
-    periods.push({ id: nextId++, start, end });
+  function setYear(value) {
+    const y = Number(value);
+    if (!Number.isFinite(y) || y === selectedYear) return;
+    selectedYear = y;
+    yearPicker.querySelectorAll(".year-btn").forEach((btn) => {
+      btn.setAttribute("aria-pressed", Number(btn.dataset.year) === selectedYear ? "true" : "false");
+    });
+    syncYearLabels();
+    recalc();
+  }
+
+  function syncYearLabels() {
+    if (yearNoteEl) yearNoteEl.textContent = String(selectedYear);
+    if (resultYearEl) resultYearEl.textContent = String(selectedYear);
+  }
+
+  /* ---- periodos ---- */
+
+  function addPeriod(start = "", end = "", animate = false) {
+    const id = nextId++;
+    periods.push({ id, start, end });
+    if (animate) animateRowId = id;
     renderRows();
     recalc();
   }
@@ -103,18 +141,20 @@
   function removePeriod(id) {
     periods = periods.filter((p) => p.id !== id);
     if (periods.length === 0) {
-      addPeriod();
+      addPeriod("", "", true);
       return;
     }
     renderRows();
     recalc();
   }
 
-  function resetAll() {
-    periods = [{ id: nextId++, start: "", end: "" }];
-    populateYears();
-    renderRows();
-    recalc();
+  function requestRemove(id, rowEl) {
+    if (!rowEl || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      removePeriod(id);
+      return;
+    }
+    rowEl.classList.add("is-leaving");
+    window.setTimeout(() => removePeriod(id), ROW_EXIT_MS);
   }
 
   function renderRows() {
@@ -124,6 +164,7 @@
       node.dataset.id = String(p.id);
       node.setAttribute("aria-label", `Periodo ${i + 1}`);
       node.querySelector(".ledger-index").textContent = String(i + 1).padStart(2, "0");
+      if (p.id === animateRowId) node.classList.add("is-entering");
 
       const startId = `period-${p.id}-start`;
       const endId = `period-${p.id}-end`;
@@ -150,10 +191,11 @@
 
       periodsEl.appendChild(node);
     });
+    animateRowId = null;
   }
 
   function recalc() {
-    const year = Number(yearSelect.value);
+    const year = selectedYear;
     const yearStart = Date.UTC(year, 0, 1);
     const yearEnd = Date.UTC(year, 11, 31);
 
@@ -164,6 +206,7 @@
     periodsEl.querySelectorAll(".ledger-row").forEach((row) => {
       const id = Number(row.dataset.id);
       const p = periods.find((x) => x.id === id);
+      if (!p) return;
       const startInput = row.querySelector('[data-field="start"]');
       const endInput = row.querySelector('[data-field="end"]');
       const rowDaysEl = row.querySelector(".row-days");
@@ -174,9 +217,11 @@
       startInput.classList.remove("invalid");
       endInput.classList.remove("invalid");
       rowDaysEl.classList.remove("is-invalid");
+      rowDaysEl.classList.remove("is-empty");
 
       if (!p.start && !p.end) {
         rowDaysEl.textContent = "—";
+        rowDaysEl.classList.add("is-empty");
         return;
       }
 
@@ -188,8 +233,10 @@
 
       if (!p.start || !p.end) {
         rowDaysEl.textContent = "—";
+        rowDaysEl.classList.add("is-empty");
         if ((p.start && !startValid) || (p.end && !endValid)) {
           rowDaysEl.textContent = "fecha no válida";
+          rowDaysEl.classList.remove("is-empty");
           rowDaysEl.classList.add("is-invalid");
           hasInvalid = true;
         }
@@ -245,23 +292,33 @@
 
     totalDaysEl.textContent = String(safeTotal);
 
-    const fillPct = Math.min(100, Math.max(0, (safeTotal / SCALE_DAYS) * 100));
-    progressFill.style.width = `${fillPct}%`;
-    progressFill.classList.toggle("is-resident", safeTotal >= THRESHOLD);
-    thresholdMark.style.left = `${(THRESHOLD / SCALE_DAYS) * 100}%`;
-
     const isResident = safeTotal >= THRESHOLD;
-    stampEl.textContent = isResident ? "Cumple el criterio de 183 días" : "No cumple el criterio de 183 días";
+    const fillPct = Math.min(100, Math.max(0, (safeTotal / SCALE_DAYS) * 100));
+
+    if (gaugeArc) {
+      gaugeArc.style.strokeDasharray = String(GAUGE_CIRCUMFERENCE);
+      gaugeArc.style.strokeDashoffset = String(GAUGE_CIRCUMFERENCE * (1 - fillPct / 100));
+      gaugeArc.classList.toggle("is-resident", isResident);
+    }
+
+    if (stampTextEl) {
+      stampTextEl.textContent = isResident
+        ? "Sí, superas los 183 días"
+        : "Todavía no llegas a los 183 días";
+    }
+    if (stampGlyphEl) {
+      stampGlyphEl.textContent = isResident ? "✓" : "·";
+    }
     stampEl.classList.toggle("is-resident", isResident);
     stampEl.classList.toggle("is-not-resident", !isResident);
 
     if (hasInvalid) {
-      detailEl.textContent = "Revisa las fechas marcadas: hay alguna fecha que no existe, o la salida es anterior a la entrada.";
+      detailEl.textContent = "Échale un ojo a las fechas marcadas: alguna no existe o la salida va antes de la llegada.";
     } else if (safeTotal === THRESHOLD) {
-      detailEl.textContent = `Llegas justo al umbral de ${THRESHOLD} días en ${year} para este criterio.`;
+      detailEl.textContent = `Te quedas justo en ${THRESHOLD} días en ${year}: el mínimo para cumplir este criterio.`;
     } else if (isResident) {
       const diff = safeTotal - THRESHOLD;
-      detailEl.textContent = `Superas el umbral en ${diff} ${diff === 1 ? "día" : "días"} sobre ${THRESHOLD}, contando ${year}.`;
+      detailEl.textContent = `Son ${diff} ${diff === 1 ? "día" : "días"} más de los ${THRESHOLD} que marca la ley, contando ${year}. Cumples el criterio de permanencia.`;
     } else {
       const diff = THRESHOLD - safeTotal;
       detailEl.textContent = `Te faltan ${diff} ${diff === 1 ? "día" : "días"} para llegar a los ${THRESHOLD} en ${year}.`;
@@ -269,7 +326,7 @@
 
     if (overlapNoteEl) {
       if (sumOfRowDays > safeTotal) {
-        overlapNoteEl.textContent = `Algunos periodos se solapan entre sí: sin contar los días repetidos, el total real es ${safeTotal}.`;
+        overlapNoteEl.textContent = `Ojo: algunas estancias se pisan entre sí. Sin contar los días repetidos, el total es ${safeTotal}.`;
         overlapNoteEl.hidden = false;
       } else {
         overlapNoteEl.hidden = true;
@@ -277,6 +334,14 @@
     }
 
     saveState();
+  }
+
+  function resetAll() {
+    periods = [{ id: nextId++, start: "", end: "" }];
+    animateRowId = periods[0].id;
+    populateYears();
+    renderRows();
+    recalc();
   }
 
   periodsEl.addEventListener("input", (e) => {
@@ -287,13 +352,17 @@
     const btn = e.target.closest(".remove-row");
     if (btn && !btn.disabled) {
       const row = btn.closest(".ledger-row");
-      removePeriod(Number(row.dataset.id));
+      requestRemove(Number(row.dataset.id), row);
     }
   });
 
-  addBtn.addEventListener("click", () => addPeriod());
+  yearPicker.addEventListener("click", (e) => {
+    const btn = e.target.closest(".year-btn");
+    if (btn) setYear(btn.dataset.year);
+  });
+
+  addBtn.addEventListener("click", () => addPeriod("", "", true));
   if (resetBtn) resetBtn.addEventListener("click", resetAll);
-  yearSelect.addEventListener("change", recalc);
 
   const saved = loadState();
   if (saved) {
