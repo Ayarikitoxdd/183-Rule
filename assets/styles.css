@@ -6,9 +6,10 @@
 
    Hoja de estilos autocontenida (sin Tailwind ni ningún runtime).
 
-   Dos acentos con papeles distintos:
-   --action  → interacción (foco, enlaces, botón principal, año activo)
-   --accent  → umbral de 183 días alcanzado (resultado)
+   Tres acentos con papeles distintos:
+   --action   → interacción (foco, enlaces, botón principal, año activo)
+   --accent   → identidad de marca (sello, avisos), decorativo
+   --positive → se ha superado el umbral de 183 días (resultado)
    ========================================================================== */
 
 :root {
@@ -24,6 +25,8 @@
   --accent-soft: #e2f0ea;
   --action: #1f5ec4;
   --action-soft: #e6edfb;
+  --positive: #8a5f12;
+  --positive-soft: #f3e8d2;
   --alert: #a93a2c;
   --alert-soft: #fbeae6;
   --focus-ring: #1f5ec4;
@@ -55,6 +58,8 @@
     --accent-soft: #1b2b26;
     --action: #8fb6f5;
     --action-soft: #1c2434;
+    --positive: #e0b15c;
+    --positive-soft: #332a17;
     --alert: #e89a8c;
     --alert-soft: #2e211d;
     --focus-ring: #8fb6f5;
@@ -391,6 +396,10 @@ summary:focus-visible,
 
 .step:last-child { border-bottom: none; }
 
+.step-periods {
+  background: color-mix(in srgb, var(--paper-raised) 55%, var(--paper-sunken) 45%);
+}
+
 .step-head {
   display: flex;
   align-items: center;
@@ -542,6 +551,7 @@ summary:focus-visible,
   background: var(--paper);
   transition: border-color 0.15s ease;
 }
+.ledger-row:hover,
 .ledger-row:focus-within {
   border-color: var(--line-strong);
 }
@@ -702,27 +712,28 @@ summary:focus-visible,
 }
 
 .btn-add {
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 600;
   color: var(--action);
-  background: var(--action-soft);
-  border: 1px solid transparent;
+  background: var(--paper);
+  border: 1px solid var(--line);
   border-radius: var(--r-md);
   width: 100%;
   margin-top: 0.8rem;
-  min-height: 3.1rem;
+  min-height: 2.9rem;
   padding: 0.7rem;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
 }
 .btn-add:hover {
   border-color: var(--action);
+  background: var(--action-soft);
 }
-.btn-add:active { transform: scale(0.995); }
+.btn-add:active { transform: scale(0.985); }
 
 /* ==========================================================================
    Resultado
@@ -732,27 +743,22 @@ summary:focus-visible,
   background: var(--paper-sunken);
 }
 
-.verdict-grid {
-  display: grid;
-  gap: 1.4rem;
+.verdict-hero {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-}
-@media (min-width: 34rem) {
-  .verdict-grid {
-    grid-template-columns: auto 1fr;
-    gap: 1.75rem;
-  }
+  text-align: center;
 }
 
 .gauge {
   position: relative;
-  width: 11rem;
-  height: 11rem;
-  justify-self: center;
+  width: 12.5rem;
+  height: 12.5rem;
   flex: none;
+  margin-bottom: 1.9rem;
 }
 @media (min-width: 34rem) {
-  .gauge { width: 12rem; height: 12rem; justify-self: start; }
+  .gauge { width: 14rem; height: 14rem; }
 }
 
 .gauge-svg {
@@ -764,13 +770,13 @@ summary:focus-visible,
 .gauge-track {
   fill: none;
   stroke: var(--line);
-  stroke-width: 10;
+  stroke-width: 11;
 }
 
 .gauge-arc {
   fill: none;
   stroke: var(--ink-faint);
-  stroke-width: 10;
+  stroke-width: 11;
   stroke-linecap: round;
   transform: rotate(-90deg);
   transform-origin: 70px 70px;
@@ -779,7 +785,7 @@ summary:focus-visible,
   transition: stroke-dashoffset 0.55s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.3s ease;
 }
 .gauge-arc.is-resident {
-  stroke: var(--accent);
+  stroke: var(--positive);
 }
 
 .gauge-threshold {
@@ -814,8 +820,12 @@ summary:focus-visible,
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1;
-  font-size: 2.8rem;
+  font-size: 3.1rem;
   color: var(--ink);
+  transition: color 0.3s ease;
+}
+.gauge:has(.gauge-arc.is-resident) .day-count {
+  color: var(--positive);
 }
 
 .day-unit {
@@ -830,7 +840,8 @@ summary:focus-visible,
 }
 
 .verdict-body {
-  min-width: 0;
+  max-width: 30rem;
+  margin: 1.2rem auto 0;
 }
 
 .stamp {
@@ -846,10 +857,11 @@ summary:focus-visible,
   text-align: left;
   color: var(--ink-soft);
   background: var(--paper-raised);
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 .stamp.is-resident {
-  color: var(--accent);
-  background: var(--accent-soft);
+  color: var(--positive);
+  background: var(--positive-soft);
 }
 .stamp.is-not-resident {
   color: var(--ink-soft);

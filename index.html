@@ -83,7 +83,8 @@
     <h1>¿Eres residente fiscal en España?</h1>
     <p class="lede">
       Apunta las temporadas que has pasado en España durante un año y te sumamos los días. Si pasan de
-      <strong>183</strong>, Hacienda te considera residente fiscal. Tú pones las fechas, nosotros hacemos la cuenta.
+      <strong>183</strong>, superas el criterio de permanencia que usa Hacienda para la residencia fiscal.
+      Tú pones las fechas, nosotros hacemos la cuenta.
     </p>
   </div>
 
@@ -100,7 +101,7 @@
       </p>
     </section>
 
-    <section class="step" aria-labelledby="step-periods">
+    <section class="step step-periods" aria-labelledby="step-periods">
       <div class="step-head">
         <h2 class="step-title" id="step-periods"><span class="step-num" aria-hidden="true">2</span> ¿Cuándo estuviste aquí?</h2>
         <button type="button" id="reset-periods" class="btn-text">Empezar de nuevo</button>
@@ -138,7 +139,7 @@
         </h2>
       </div>
 
-      <div class="verdict-grid">
+      <div class="verdict-hero">
         <div class="gauge">
           <svg class="gauge-svg" viewBox="0 0 140 140" aria-hidden="true">
             <circle class="gauge-track" cx="70" cy="70" r="58"></circle>
@@ -152,15 +153,16 @@
           <span class="gauge-threshold-label" aria-hidden="true">aquí están los 183</span>
         </div>
 
-        <div class="verdict-body">
-          <span id="verdict-stamp" class="stamp is-not-resident">
-            <span class="stamp-glyph" aria-hidden="true">—</span>
-            <span id="verdict-stamp-text">Todavía no llegas a los 183 días</span>
-          </span>
-          <p id="verdict-detail" class="verdict-detail" aria-live="polite">Pon tus fechas arriba y verás el total al instante.</p>
-          <p id="verdict-overlap-note" class="verdict-overlap-note" hidden></p>
-          <p class="gauge-caption">El círculo es el año completo. La marca de abajo señala los 183 días.</p>
-        </div>
+        <span id="verdict-stamp" class="stamp is-not-resident">
+          <span class="stamp-glyph" aria-hidden="true">—</span>
+          <span id="verdict-stamp-text">Todavía no llegas a los 183 días</span>
+        </span>
+      </div>
+
+      <div class="verdict-body">
+        <p id="verdict-detail" class="verdict-detail" aria-live="polite">Pon tus fechas arriba y verás el total al instante.</p>
+        <p id="verdict-overlap-note" class="verdict-overlap-note" hidden></p>
+        <p class="gauge-caption">El círculo es el año completo. La marca de abajo señala los 183 días.</p>
       </div>
     </section>
 
