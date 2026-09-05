@@ -327,6 +327,22 @@ summary:focus-visible,
 }
 .theme-toggle:hover { background: var(--paper-sunken); color: var(--ink); }
 
+/* En móviles estrechos, "Fiscalidad Simple" + 2 enlaces + el botón de tema
+   no caben en una fila: se deja solo el sello como logotipo compacto y se
+   ajusta el espaciado de los enlaces para que nada quede cortado. */
+@media (max-width: 30rem) {
+  .header-bar .wordmark {
+    display: none;
+  }
+  .main-nav {
+    gap: 0.1rem;
+  }
+  .main-nav .nav-link {
+    padding: 0 0.55rem;
+    font-size: 0.88rem;
+  }
+}
+
 /* ---- hero ---- */
 
 .hero {
@@ -1099,31 +1115,149 @@ details.faq-item[open] .faq-marker { transform: rotate(45deg); }
 .footer-bar {
   max-width: var(--container);
   margin-inline: auto;
-  padding: 1.35rem var(--space-page-x);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  font-size: 0.9rem;
-  color: var(--ink-soft);
+  padding: 2.25rem var(--space-page-x) 1.5rem;
 }
 
-.footer-bar p {
+.footer-grid {
+  display: grid;
+  gap: 2rem;
+  margin-bottom: 1.75rem;
+}
+@media (min-width: 36rem) {
+  .footer-grid {
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  margin-bottom: 0.6rem;
+}
+.footer-brand .wordmark { font-size: 1.05rem; }
+
+.footer-tagline {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  max-width: 22rem;
   margin: 0;
 }
 
-.footer-nav {
-  display: flex;
-  gap: 0.35rem;
+.footer-col h2 {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 600;
+  margin: 0 0 0.75rem;
 }
 
-.footer-nav .nav-link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
-  padding: 0 0.7rem;
+.footer-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-col a {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+.footer-col a:hover {
+  color: var(--action);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-legal {
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--ink-faint);
+}
+.footer-legal p { margin: 0; }
+.footer-legal p + p { margin-top: 0.4rem; }
+
+/* ---- también puede interesarte ---- */
+
+.related-tools {
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--paper-raised);
+  padding: 1.1rem 1.2rem;
+  margin: 2.5rem 0 1.5rem;
+}
+.related-tools .eyebrow {
+  margin-bottom: 0.6rem;
+}
+.related-tools .cross-link {
+  margin-top: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+.related-tools p {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  margin: 0.35rem 0 0;
+}
+
+/* ---- página de inicio: tarjetas de herramientas ---- */
+
+.tool-grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+@media (min-width: 36rem) {
+  .tool-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.tool-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--paper-raised);
+  box-shadow: var(--shadow-soft);
+  padding: 1.5rem;
+}
+
+.tool-card .eyebrow {
+  margin-bottom: 0.9rem;
+}
+
+.tool-card h3 {
+  font-size: 1.35rem;
+  margin: 0 0 0.5rem;
+}
+
+.tool-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0 0 1.3rem;
+  flex: 1;
+}
+
+.tool-card .cross-link {
+  margin-top: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.tools-note {
   font-size: 0.9rem;
+  color: var(--ink-faint);
+  margin: 0 0 2rem;
 }
 
 /* ---- 404 ---- */
