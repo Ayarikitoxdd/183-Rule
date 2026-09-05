@@ -7,6 +7,12 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://183rule.netlify.app/modelo-720.html</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://183rule.netlify.app/info.html</loc>
     <lastmod>2026-09-03</lastmod>
     <changefreq>yearly</changefreq>
