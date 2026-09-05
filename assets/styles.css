@@ -1172,6 +1172,12 @@ details.faq-item[open] .faq-marker { transform: rotate(45deg); }
 @media (min-width: 640px) {
   .wizard-question { font-size: 1.5rem; }
 }
+/* El foco en tabindex="-1" es solo para que el lector de pantalla anuncie
+   la nueva pregunta al cambiar de paso; no debe verse un recuadro. */
+.wizard-question:focus-visible,
+.wizard-question:focus {
+  outline: none;
+}
 
 .wizard-help {
   font-size: 0.95rem;
@@ -1235,6 +1241,13 @@ details.faq-item[open] .faq-marker { transform: rotate(45deg); }
   padding: 0.5rem 2.3rem 0.5rem 0.7rem;
   width: 100%;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.value-input::-webkit-outer-spin-button,
+.value-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .value-input:hover { border-color: var(--ink-faint); }
 .value-input:focus {
