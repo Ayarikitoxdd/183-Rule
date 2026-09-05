@@ -1146,7 +1146,7 @@ details.faq-item[open] .faq-marker { transform: rotate(45deg); }
   margin: 0;
 }
 
-.footer-col h2 {
+.footer-col-label {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.08em;
