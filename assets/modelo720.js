@@ -518,7 +518,7 @@
       wrap.appendChild(p);
 
       const link = document.createElement("a");
-      link.href = "regla-183.html";
+      link.href = "/regla-183";
       link.className = "cross-link";
       link.textContent = "→ Ir a la calculadora de residencia fiscal (Regla 183)";
       wrap.appendChild(link);

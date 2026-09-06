@@ -1,2 +1,11 @@
-/info.html   /regla-183.html   301
-/faq.html    /regla-183.html   301
+# URLs antiguas que ya no existen -> a la herramienta correspondiente
+/info.html          /regla-183    301
+/faq.html           /regla-183    301
+
+# Quita la extensión .html de las dos herramientas (URL canónica limpia)
+/regla-183.html      /regla-183    301!
+/modelo-720.html     /modelo-720   301!
+
+# Sirve el contenido real detrás de la URL limpia, sin redirigir de nuevo
+/regla-183           /regla-183.html    200
+/modelo-720          /modelo-720.html   200
