@@ -6,6 +6,14 @@
 /regla-183.html      /regla-183    301!
 /modelo-720.html     /modelo-720   301!
 
+# Quita la extensión .html de las páginas legales (URL canónica limpia)
+/aviso-legal.html        /aviso-legal          301!
+/privacidad.html         /politica-privacidad  301!
+/cookies.html            /politica-cookies     301!
+
 # Sirve el contenido real detrás de la URL limpia, sin redirigir de nuevo
 /regla-183           /regla-183.html    200
 /modelo-720          /modelo-720.html   200
+/aviso-legal         /aviso-legal.html    200
+/politica-privacidad /privacidad.html     200
+/politica-cookies    /cookies.html        200
